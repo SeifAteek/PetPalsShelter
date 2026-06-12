@@ -79,27 +79,31 @@ const Applications = ({ shelterId }) => {
 
     const getStatusBadge = (status) => {
         if (status === 'Approved') return (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-50 text-brand-700 border border-brand-200">
-                <CheckCircle2 className="w-4 h-4" /> Approved
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 9999, fontSize: 12, fontWeight: 700, background: '#16A34A', color: '#FFFFFF', border: '1.5px solid #15803D' }}>
+                <CheckCircle2 style={{ width: 14, height: 14 }} /> Approved
             </span>
         );
         if (status === 'Rejected') return (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
-                <XCircle className="w-4 h-4" /> Rejected
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 9999, fontSize: 12, fontWeight: 700, background: '#DC2626', color: '#FFFFFF', border: '1.5px solid #B91C1C' }}>
+                <XCircle style={{ width: 14, height: 14 }} /> Rejected
             </span>
         );
         return (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                <Clock className="w-4 h-4" /> Under Review
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 12px', borderRadius: 9999, fontSize: 12, fontWeight: 700, background: '#D97706', color: '#FFFFFF', border: '1.5px solid #B45309' }}>
+                <Clock style={{ width: 14, height: 14 }} /> Under Review
             </span>
         );
     };
 
     return (
         <div className="space-y-6">
-            <div>
-                <h2 className="text-2xl font-bold text-slate-800">Adoption Applications</h2>
-                <p className="text-slate-500 mt-1">Review and manage incoming applications for your pets.</p>
+            <div className="flex justify-between items-end mb-8">
+                <div>
+                    <h3 className="text-xl font-bold text-[var(--pp-text-primary)] flex items-center gap-2">
+                        Adoption Applications
+                    </h3>
+                    <p className="text-sm text-[var(--pp-text-secondary)] mt-1">Review and manage incoming applications for your pets.</p>
+                </div>
             </div>
 
             {loading ? (
@@ -107,21 +111,21 @@ const Applications = ({ shelterId }) => {
                     <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
                 </div>
             ) : (
-                <div className="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden mt-6">
+                <div className="pp-card overflow-hidden mt-6">
                     {applications.length === 0 ? (
-                        <div className="p-12 text-center border-dashed border-2 border-slate-100 m-6 rounded-2xl">
-                            <h3 className="text-lg font-semibold text-slate-800">No applications found</h3>
-                            <p className="text-slate-500 mt-2">Applications for your available pets will appear here.</p>
+                        <div className="p-12 text-center border-dashed border-2 border-[var(--pp-card-border)] m-6 rounded-2xl">
+                            <h3 className="text-lg font-semibold text-[var(--pp-text-primary)]">No applications found</h3>
+                            <p className="text-[var(--pp-text-secondary)] mt-2">Applications for your available pets will appear here.</p>
                         </div>
                     ) : (
-                        <div className="divide-y divide-slate-100">
+                        <div className="divide-y divide-[var(--pp-card-border)]">
                             {applications.map((app) => (
-                                <div key={app.application_id} className="p-6 hover:bg-slate-50 transition-colors flex flex-col md:flex-row items-center gap-6">
+                                <div key={app.application_id} className="p-6 hover:bg-[var(--pp-bg)] transition-colors flex flex-col md:flex-row items-center gap-6">
                                     <div className="flex-shrink-0 relative">
                                         {app.pet?.avatar_url ? (
-                                            <img src={app.pet.avatar_url} alt={app.pet?.name} className="w-16 h-16 rounded-xl object-cover shadow-sm bg-slate-100" />
+                                            <img src={app.pet.avatar_url} alt={app.pet?.name} className="w-16 h-16 rounded-xl object-cover shadow-sm bg-[var(--pp-bg)]" />
                                         ) : (
-                                            <div className="w-16 h-16 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400">
+                                            <div className="w-16 h-16 rounded-xl bg-[var(--pp-bg)] flex items-center justify-center text-[var(--pp-text-muted)]">
                                                 <Star className="w-6 h-6" />
                                             </div>
                                         )}
@@ -129,23 +133,23 @@ const Applications = ({ shelterId }) => {
                                     
                                     <div className="flex-1 text-center md:text-left">
                                         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2 mb-2">
-                                            <h4 className="text-lg font-bold text-slate-900">
+                                            <h4 className="text-lg font-bold text-[var(--pp-text-primary)]">
                                                 Application for {app.pet?.name || 'Unknown Pet'}
                                             </h4>
                                             {getStatusBadge(app.status)}
                                         </div>
                                         
-                                        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-slate-600">
+                                        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--pp-text-secondary)]">
                                             <div className="flex items-center gap-2">
-                                                <User className="w-4 h-4 text-slate-400" />
+                                                <User className="w-4 h-4 text-[var(--pp-text-muted)]" />
                                                 <span className="font-medium">Applicant:</span> {app.adopter?.user_name || 'Unknown'}
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <Star className="w-4 h-4 text-tangerine-500" />
                                                 <span className="font-medium">Match Score:</span>
                                                 {app.match_score != null
-                                                    ? <span className="font-bold text-slate-800">{app.match_score}%</span>
-                                                    : <span className="text-slate-400 italic text-sm">Not scored</span>
+                                                    ? <span className="font-bold text-[var(--pp-text-primary)]">{app.match_score}%</span>
+                                                    : <span className="text-[var(--pp-text-muted)] italic text-sm">Not scored</span>
                                                 }
                                             </div>
                                         </div>
@@ -155,13 +159,13 @@ const Applications = ({ shelterId }) => {
                                         <div className="flex items-center gap-3 w-full md:w-auto mt-4 md:mt-0">
                                             <button
                                                 onClick={() => handleUpdateStatus(app.application_id, app.pet_id, 'Rejected')}
-                                                className="flex-1 md:flex-none px-4 py-2 bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 font-semibold rounded-xl transition-colors shadow-sm"
+                                                className="flex-1 md:flex-none btn-secondary !border-red-200 !text-red-600 hover:!bg-red-50 hover:!border-red-300"
                                             >
                                                 Reject
                                             </button>
                                             <button
                                                 onClick={() => handleUpdateStatus(app.application_id, app.pet_id, 'Approved')}
-                                                className="flex-1 md:flex-none px-4 py-2 bg-brand-600 text-white hover:bg-brand-700 font-semibold rounded-xl transition-colors shadow-sm"
+                                                className="flex-1 md:flex-none btn-primary"
                                             >
                                                 Approve
                                             </button>

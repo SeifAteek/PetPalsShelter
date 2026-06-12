@@ -34,9 +34,9 @@ export default function MeshBackground() {
         className="pp-mesh-wash"
         style={{
           background: `linear-gradient(135deg,
-            rgba(242, 164, 165, 0.35) 0%,
-            rgba(242, 255, 233, 0.25) 45%,
-            rgba(9, 0, 135, 0.18) 100%)`,
+            rgba(236, 94, 39, 0.12) 0%,
+            rgba(250, 248, 242, 0.60) 45%,
+            rgba(244, 122, 74, 0.08) 100%)`,
         }}
       />
       {meshOrbs.map((orb, i) => (
@@ -58,7 +58,7 @@ export default function MeshBackground() {
       <div
         className="pp-mesh-vignette"
         style={{
-          background: `linear-gradient(180deg, transparent 0%, rgba(9, 0, 135, 0.06) 100%)`,
+          background: `linear-gradient(180deg, transparent 0%, rgba(236, 94, 39, 0.04) 100%)`,
         }}
       />
     </div>

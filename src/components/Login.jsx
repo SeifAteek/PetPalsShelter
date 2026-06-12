@@ -47,93 +47,148 @@ const Login = ({ onLoginSuccess }) => {
     };
 
     return (
-        <div className="relative flex min-h-screen overflow-hidden text-[var(--pp-text-primary)]">
-            <MeshBackground />
-            <div className="absolute right-4 top-4 z-20"><ThemeToggle /></div>
-            {/* Left Side: Brand Story */}
-            <div className="pp-login-brand-panel relative z-10 hidden w-1/2 flex-col overflow-hidden border-r border-[var(--pp-card-border)] lg:flex">
-                <div className="relative z-10 flex h-full flex-col justify-between p-16">
-                    <PetPalsBrand logoSize="md" badge="Shelter" badgeClassName="text-lg font-bold text-cerulean" />
+        <div
+            className="relative flex min-h-screen overflow-hidden"
+            style={{ background: 'var(--pp-bg)', color: 'var(--pp-text-primary)' }}
+        >
+            {/* Theme toggle */}
+            <div className="absolute right-5 top-5 z-20">
+                <ThemeToggle />
+            </div>
 
-                    <div className="mt-20 max-w-lg">
-                        <h2 className="mb-6 text-4xl font-bold leading-tight">
-                            The intelligent operating system for modern animal shelters.
-                        </h2>
-                        <ul className="space-y-6 text-slate-300">
-                            <li className="flex items-start gap-4">
-                                <Heart className="w-6 h-6 text-brand-400 shrink-0" />
-                                <span><strong className="text-white">Pet Adoptions.</strong> Seamless applications, status tracking and match insights.</span>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <ShieldCheck className="w-6 h-6 text-brand-400 shrink-0" />
-                                <span><strong className="text-white">Secure Records.</strong> Bank-level encryption for all medical and organizational data.</span>
-                            </li>
-                        </ul>
+            {/* ── Left brand panel ── */}
+            <div
+                className="hidden lg:flex w-1/2 flex-col p-12 xl:p-16 relative"
+                style={{ borderRight: '1px solid var(--pp-card-border)' }}
+            >
+                {/* Decorative gradient blobs */}
+                <div
+                    aria-hidden
+                    className="absolute inset-0 overflow-hidden pointer-events-none opacity-60 dark:opacity-10"
+                    style={{
+                        background: 'linear-gradient(135deg, var(--pp-primary) 0%, var(--pp-bg) 60%, var(--pp-bg) 100%)',
+                    }}
+                />
+
+                <div className="relative z-10 flex items-center gap-3">
+                    <PetPalsBrand logoSize="xl" />
+                </div>
+
+                <div className="relative z-10 flex-1 flex flex-col justify-center max-w-lg mt-12">
+                    <div
+                        className="mb-6 inline-flex w-fit items-center gap-2 px-4 py-1.5 text-xs font-bold uppercase tracking-widest"
+                        style={{
+                            borderRadius: 99, border: '1px solid var(--pp-card-border)',
+                            background: 'var(--pp-card-bg)', color: 'var(--pp-primary)',
+                        }}
+                    >
+                        Shelter OS
                     </div>
+                    <h2 className="text-4xl font-black leading-tight mb-6" style={{ color: 'var(--pp-text-primary)' }}>
+                        The intelligent operating system for{' '}
+                        <span style={{ color: 'var(--pp-primary)' }}>
+                            modern animal shelters
+                        </span>
+                    </h2>
+                    <ul className="space-y-5" style={{ color: 'var(--pp-text-secondary)' }}>
+                        <li className="flex items-start gap-4">
+                            <div
+                                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                                style={{ background: 'var(--pp-card-bg)', color: 'var(--pp-primary)' }}
+                            >
+                                <Heart className="w-4 h-4" />
+                            </div>
+                            <span>
+                                <strong style={{ color: 'var(--pp-text-primary)' }}>Pet Adoptions.</strong>{' '}
+                                Seamless applications, status tracking and match insights.
+                            </span>
+                        </li>
+                        <li className="flex items-start gap-4">
+                            <div
+                                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                                style={{ background: 'var(--pp-card-bg)', color: 'var(--pp-primary)' }}
+                            >
+                                <ShieldCheck className="w-4 h-4" />
+                            </div>
+                            <span>
+                                <strong style={{ color: 'var(--pp-text-primary)' }}>Secure Records.</strong>{' '}
+                                Bank-level encryption for all medical and organizational data.
+                            </span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             {/* Right Side: Auth Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-16">
-                <div className="w-full max-w-md">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-16 relative z-10">
+                <div 
+                    className="w-full max-w-md"
+                    style={{
+                        background: 'var(--pp-card-bg)',
+                        borderRadius: 24,
+                        border: '1px solid var(--pp-card-border)',
+                        boxShadow: 'var(--pp-shadow-floating)',
+                        padding: '40px',
+                    }}
+                >
                     {!showReset ? (
                         <>
-                            <div className="mb-10 text-center lg:text-left">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome back</h2>
-                                <p className="text-slate-500">Sign in to your shelter portal to continue.</p>
+                            <div className="mb-8 text-center lg:text-left">
+                                <h2 className="text-2xl font-bold mb-1.5" style={{ color: 'var(--pp-text-primary)' }}>Welcome back</h2>
+                                <p style={{ color: 'var(--pp-text-secondary)', fontSize: 14 }}>Sign in to your shelter portal to continue.</p>
                             </div>
                             {error && (
-                                <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm mb-6 border border-red-100 flex items-center gap-3">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                                <div className="flex items-center gap-3 p-4 text-sm mb-6" style={{ background: '#FEF2F2', color: '#991B1B', border: '1px solid #FECACA', borderRadius: 12 }}>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></div>
                                     {error}
                                 </div>
                             )}
-                            <form onSubmit={handleLogin} className="space-y-6">
+                            <form onSubmit={handleLogin} className="space-y-5">
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Work Email</label>
+                                    <label className="block mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--pp-text-muted)' }}>Work Email</label>
                                     <div className="relative">
-                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><Mail className="h-5 w-5 text-slate-400" /></div>
-                                        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors" placeholder="contact@shelter.org" />
+                                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--pp-text-muted)' }} />
+                                        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: '100%', padding: '11px 14px 11px 38px', borderRadius: 12, border: '1.5px solid var(--pp-input-border)', background: 'var(--pp-input-bg)', fontSize: 14, color: 'var(--pp-text-primary)', outline: 'none' }} onFocus={e => e.target.style.borderColor = 'var(--pp-primary)'} onBlur={e => e.target.style.borderColor = 'var(--pp-input-border)'} placeholder="contact@shelter.org" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Password</label>
-                                    <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors" placeholder="••••••••" />
+                                    <label className="block mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--pp-text-muted)' }}>Password</label>
+                                    <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} style={{ width: '100%', padding: '11px 14px', borderRadius: 12, border: '1.5px solid var(--pp-input-border)', background: 'var(--pp-input-bg)', fontSize: 14, color: 'var(--pp-text-primary)', outline: 'none' }} onFocus={e => e.target.style.borderColor = 'var(--pp-primary)'} onBlur={e => e.target.style.borderColor = 'var(--pp-input-border)'} placeholder="••••••••" />
                                 </div>
                                 <div className="flex items-center justify-end">
-                                    <button type="button" onClick={() => { setShowReset(true); setResetEmail(email); setError(null); }} className="text-sm font-medium text-brand-600 hover:text-brand-500">
+                                    <button type="button" onClick={() => { setShowReset(true); setResetEmail(email); setError(null); }} style={{ fontSize: 13, fontWeight: 600, color: 'var(--pp-primary)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                                         Forgot password?
                                     </button>
                                 </div>
-                                <button type="submit" disabled={loading} className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                                <button type="submit" disabled={loading} className="btn-primary w-full py-3.5 disabled:opacity-50">
                                     {loading ? 'Authenticating...' : 'Sign In'}
                                 </button>
                             </form>
                         </>
                     ) : (
                         <>
-                            <button onClick={() => { setShowReset(false); setResetSent(false); setError(null); }} className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 mb-8 transition-colors">
+                            <button onClick={() => { setShowReset(false); setResetSent(false); setError(null); }} className="flex items-center gap-2 mb-6 text-sm font-semibold" style={{ color: 'var(--pp-text-muted)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                                 <ArrowLeft className="w-4 h-4" /> Back to sign in
                             </button>
-                            <div className="mb-8">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-2">Reset password</h2>
-                                <p className="text-slate-500">Enter your email and we'll send a reset link.</p>
+                            <div className="mb-6">
+                                <h2 className="text-2xl font-bold mb-1.5" style={{ color: 'var(--pp-text-primary)' }}>Reset password</h2>
+                                <p style={{ color: 'var(--pp-text-secondary)', fontSize: 14 }}>Enter your email and we'll send a reset link.</p>
                             </div>
-                            {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm mb-6 border border-red-100">{error}</div>}
+                            {error && <div className="p-4 text-sm mb-6" style={{ background: '#FEF2F2', color: '#991B1B', border: '1px solid #FECACA', borderRadius: 12 }}>{error}</div>}
                             {resetSent ? (
-                                <div className="bg-emerald-50 text-emerald-700 p-5 rounded-xl border border-emerald-200 font-semibold text-sm">
+                                <div className="p-5 font-semibold text-sm" style={{ background: '#ECFDF5', color: '#065F46', border: '1px solid #A7F3D0', borderRadius: 12 }}>
                                     ✓ Reset link sent to <strong>{resetEmail}</strong>. Check your inbox.
                                 </div>
                             ) : (
-                                <form onSubmit={handleResetPassword} className="space-y-6">
+                                <form onSubmit={handleResetPassword} className="space-y-5">
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
+                                        <label className="block mb-2 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--pp-text-muted)' }}>Email Address</label>
                                         <div className="relative">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><Mail className="h-5 w-5 text-slate-400" /></div>
-                                            <input type="email" required value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl bg-slate-50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors" placeholder="contact@shelter.org" />
+                                            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--pp-text-muted)' }} />
+                                            <input type="email" required value={resetEmail} onChange={(e) => setResetEmail(e.target.value)} style={{ width: '100%', padding: '11px 14px 11px 38px', borderRadius: 12, border: '1.5px solid var(--pp-input-border)', background: 'var(--pp-input-bg)', fontSize: 14, color: 'var(--pp-text-primary)', outline: 'none' }} onFocus={e => e.target.style.borderColor = 'var(--pp-primary)'} onBlur={e => e.target.style.borderColor = 'var(--pp-input-border)'} placeholder="contact@shelter.org" />
                                         </div>
                                     </div>
-                                    <button type="submit" disabled={resetLoading} className="w-full flex justify-center py-3.5 px-4 rounded-xl shadow-sm text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 transition-all disabled:opacity-50">
+                                    <button type="submit" disabled={resetLoading} className="btn-primary w-full py-3.5 disabled:opacity-50">
                                         {resetLoading ? 'Sending...' : 'Send Reset Link'}
                                     </button>
                                 </form>

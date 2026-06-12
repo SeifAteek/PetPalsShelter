@@ -1,12 +1,18 @@
 /** Exact PetPals classic palette — keep in sync with iOS `PetPalsPalette.swift` */
 
 export const PP = {
-  honeydew: '#F2FFE9',
+  honeydew: '#FAF8F2',    /* Milk cream — light theme base */
   powderBlush: '#F2A4A5',
   almondCream: '#E5D4C5',
   richCerulean: '#3078A4',
   navy: '#090087',
   navyDark: '#010A2E',
+  orange: '#EC5E27',      /* Primary brand orange */
+  orangeLight: '#F47A4A', /* Lighter orange for gradients */
+  orangePale: '#FDE8DC',  /* Pale orange tint for orbs */
+  graphite: '#403D39',      /* Dark theme base */
+  graphiteDark: '#302E2B',  /* Darkest graphite */
+  graphiteLight: '#4A4743', /* Card/panel graphite */
 };
 
 function blendHex(a, b, t) {
@@ -22,13 +28,13 @@ function blendHex(a, b, t) {
   return `#${[r, g, bVal].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 }
 
-/** iOS `darkBackgroundGradient` stops */
+/** iOS `darkBackgroundGradient` stops — deep graphite base with orange warmth */
 export const darkBgGradient = `linear-gradient(180deg,
-  ${PP.navyDark} 0%,
-  ${blendHex(PP.navyDark, PP.richCerulean, 0.32)} 28%,
-  ${blendHex(PP.navy, PP.richCerulean, 0.4)} 52%,
-  ${blendHex(PP.navy, PP.powderBlush, 0.52)} 78%,
-  rgba(242, 164, 165, 0.88) 100%)`;
+  #0E0D0C 0%,
+  #1A1816 30%,
+  #1F1D1A 60%,
+  #2A2420 85%,
+  #322418 100%)`;
 
 /** iOS `meshGradientStops` for conic mesh */
 export const meshConicStops = [
@@ -44,48 +50,48 @@ export const meshConicStops = [
 /** iOS `meshOrbs` — size, blur, offset (from center), colors */
 export const meshOrbs = [
   {
-    color: blendHex(PP.powderBlush, PP.richCerulean, 0.4),
+    color: PP.orange,
     size: 340,
-    blur: 88,
+    blur: 100,
     ox: -130,
     oy: -200,
-    lightOpacity: 0.5,
+    lightOpacity: 0.22,
     darkOpacity: 0.28,
   },
   {
-    color: PP.powderBlush,
+    color: PP.orangeLight,
     size: 300,
-    blur: 78,
-    ox: 150,
-    oy: -80,
-    lightOpacity: 0.45,
+    blur: 88,
+    ox: 160,
+    oy: -90,
+    lightOpacity: 0.18,
     darkOpacity: 0.22,
   },
   {
-    color: blendHex(PP.honeydew, PP.almondCream, 0.45),
-    size: 380,
-    blur: 95,
+    color: PP.orangePale,
+    size: 420,
+    blur: 110,
     ox: 20,
-    oy: 40,
-    lightOpacity: 0.55,
-    darkOpacity: 0.18,
+    oy: 60,
+    lightOpacity: 0.45,
+    darkOpacity: 0.15,
   },
   {
-    color: PP.navy,
+    color: blendHex(PP.almondCream, PP.orange, 0.3),
     size: 320,
-    blur: 85,
-    ox: -100,
+    blur: 90,
+    ox: -110,
     oy: 340,
-    lightOpacity: 0.35,
-    darkOpacity: 0.45,
+    lightOpacity: 0.28,
+    darkOpacity: 0.35,
   },
   {
-    color: PP.richCerulean,
-    size: 280,
+    color: PP.orange,
+    size: 260,
     blur: 72,
-    ox: 120,
-    oy: 300,
-    lightOpacity: 0.38,
+    ox: 130,
+    oy: 310,
+    lightOpacity: 0.15,
     darkOpacity: 0.3,
   },
 ];

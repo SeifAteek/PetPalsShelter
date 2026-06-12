@@ -79,18 +79,18 @@ const Settings = ({ shelterData, setShelterData }) => {
     };
 
     return (
-        <div className="flex flex-col h-full relative max-w-5xl">
+        <div className="flex flex-col h-full relative w-full">
             <div className="flex justify-between items-end mb-8">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <h3 className="text-xl font-bold text-[var(--pp-text-primary)] flex items-center gap-2">
                         Shelter Profile
                     </h3>
-                    <p className="text-sm text-slate-500 mt-1">Manage your organization's identity and certification details.</p>
+                    <p className="text-sm text-[var(--pp-text-secondary)] mt-1">Manage your organization's identity and certification details.</p>
                 </div>
                 <button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-6 py-3 rounded-xl font-bold shadow-sm transition-all disabled:opacity-50 shrink-0 outline-none focus:ring-2 focus:ring-brand-500/50"
+                    className="btn-primary flex items-center gap-2 disabled:opacity-50"
                 >
                     {isSaving ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -112,29 +112,29 @@ const Settings = ({ shelterData, setShelterData }) => {
                     
                     {/* Left Column: Logo Branding */}
                     <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <label className="block text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                <HeartHandshake className="w-4 h-4 text-slate-400" />
+                        <div className="pp-card p-6">
+                            <label className="block text-sm font-bold text-[var(--pp-text-primary)] mb-4 flex items-center gap-2">
+                                <HeartHandshake className="w-4 h-4 text-[var(--pp-text-muted)]" />
                                 Shelter Logo
                             </label>
 
                             <label
                                 htmlFor="logo-upload"
-                                className="relative group w-full aspect-square bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center overflow-hidden hover:border-brand-400 hover:bg-brand-50/50 transition-all cursor-pointer shadow-sm"
+                                className="relative group w-full aspect-square bg-[var(--pp-bg)] rounded-2xl border-2 border-dashed border-[var(--pp-card-border)] flex flex-col items-center justify-center overflow-hidden hover:border-[var(--pp-primary)] transition-all cursor-pointer shadow-sm"
                             >
                                 {previewUrl ? (
-                                    <img src={previewUrl} alt="Logo Preview" className="w-full h-full object-contain p-6 bg-white" />
+                                    <img src={previewUrl} alt="Logo Preview" className="w-full h-full object-contain p-6 bg-[var(--pp-bg)]" />
                                 ) : (
                                     <div className="text-center p-6 flex flex-col items-center">
-                                        <div className="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center mb-4">
-                                            <Upload className="w-6 h-6 text-slate-400 group-hover:text-brand-500 transition-colors" />
+                                        <div className="w-16 h-16 bg-[var(--pp-card-bg)] rounded-full shadow-sm flex items-center justify-center mb-4 border border-[var(--pp-card-border)]">
+                                            <Upload className="w-6 h-6 text-[var(--pp-text-muted)] group-hover:text-[var(--pp-primary)] transition-colors" />
                                         </div>
-                                        <p className="text-sm font-bold text-slate-700 mb-1 group-hover:text-brand-700 transition-colors">Click to Upload</p>
+                                        <p className="text-sm font-bold text-[var(--pp-text-secondary)] mb-1 group-hover:text-[var(--pp-primary)] transition-colors">Click to Upload</p>
                                     </div>
                                 )}
 
                                 <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
-                                    <span className="text-white font-bold text-sm bg-brand-600 px-5 py-2.5 rounded-full shadow-sm">Change Image</span>
+                                    <span className="text-white font-bold text-sm bg-[var(--pp-primary)] px-5 py-2.5 rounded-full shadow-sm">Change Image</span>
                                 </div>
 
                                 <input
@@ -145,7 +145,7 @@ const Settings = ({ shelterData, setShelterData }) => {
                                     className="hidden"
                                 />
                             </label>
-                            <p className="text-xs font-medium text-slate-500 text-center mt-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <p className="text-xs font-medium text-[var(--pp-text-muted)] text-center mt-4 bg-[var(--pp-bg)] p-3 rounded-lg border border-[var(--pp-card-border)]">
                                 Supported formats: PNG, JPG, SVG.<br/> Recommended size: 512x512px.
                             </p>
                         </div>
@@ -153,10 +153,10 @@ const Settings = ({ shelterData, setShelterData }) => {
 
                     {/* Right Column: Information */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+                        <div className="pp-card p-6 space-y-6">
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-                                    <Building2 className="w-4 h-4 text-slate-400" />
+                                <label className="block text-sm font-semibold text-[var(--pp-text-secondary)] mb-2 flex items-center gap-2">
+                                    <Building2 className="w-4 h-4 text-[var(--pp-text-muted)]" />
                                     Organization Name
                                 </label>
                                 <input
@@ -164,14 +164,14 @@ const Settings = ({ shelterData, setShelterData }) => {
                                     required
                                     value={formData.org_name}
                                     onChange={(e) => setFormData({...formData, org_name: e.target.value})}
-                                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none font-medium text-slate-900 text-base transition-all"
+                                    className="w-full px-4 py-3.5 rounded-xl bg-[var(--pp-input-bg)] border border-[var(--pp-input-border)] focus:ring-2 focus:ring-[var(--pp-primary)]/20 focus:border-[var(--pp-primary)] outline-none font-medium text-[var(--pp-text-primary)] text-base transition-all"
                                     placeholder="Enter your shelter's official name"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-                                    <ShieldCheck className="w-4 h-4 text-slate-400" />
+                                <label className="block text-sm font-semibold text-[var(--pp-text-secondary)] mb-2 flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-[var(--pp-text-muted)]" />
                                     License Number
                                 </label>
                                 <input
@@ -179,18 +179,18 @@ const Settings = ({ shelterData, setShelterData }) => {
                                     required
                                     value={formData.license_number}
                                     onChange={(e) => setFormData({...formData, license_number: e.target.value})}
-                                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none font-medium text-slate-900 text-base transition-all"
+                                    className="w-full px-4 py-3.5 rounded-xl bg-[var(--pp-input-bg)] border border-[var(--pp-input-border)] focus:ring-2 focus:ring-[var(--pp-primary)]/20 focus:border-[var(--pp-primary)] outline-none font-medium text-[var(--pp-text-primary)] text-base transition-all"
                                     placeholder="e.g. SHELTER-12345"
                                 />
                             </div>
                         </div>
 
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 shadow-sm opacity-60">
-                             <h4 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                <SettingsIcon className="w-4 h-4 text-slate-400" />
+                        <div className="bg-[var(--pp-bg)] border border-[var(--pp-card-border)] rounded-2xl p-6 shadow-sm opacity-60">
+                             <h4 className="text-sm font-bold text-[var(--pp-text-primary)] mb-4 flex items-center gap-2">
+                                <SettingsIcon className="w-4 h-4 text-[var(--pp-text-muted)]" />
                                 Preferences
                             </h4>
-                            <p className="text-sm text-slate-500 font-medium">Notification and display preferences will be available in the next update.</p>
+                            <p className="text-sm text-[var(--pp-text-secondary)] font-medium">Notification and display preferences will be available in the next update.</p>
                         </div>
                     </div>
                 </form>

@@ -213,28 +213,28 @@ const ClientChat = ({ shelterId }) => {
     };
 
     return (
-        <div className="flex h-full bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="flex w-full pp-card overflow-hidden" style={{ height: 'calc(100vh - 240px)' }}>
             {/* Sidebar: Client List */}
-            <div className="w-1/3 max-w-sm border-r border-slate-100 bg-slate-50 flex flex-col">
-                <div className="p-5 border-b border-slate-200">
-                    <h3 className="text-lg font-bold text-slate-900 mb-4">Messages</h3>
+            <div className="w-1/3 max-w-sm border-r border-[var(--pp-card-border)] bg-[var(--pp-bg)] flex flex-col">
+                <div className="p-5 border-b border-[var(--pp-card-border)]">
+                    <h3 className="text-lg font-bold text-[var(--pp-text-primary)] mb-4">Messages</h3>
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Search className="h-4 w-4 text-slate-400" />
+                            <Search className="h-4 w-4 text-[var(--pp-text-muted)]" />
                         </div>
                         <input
                             type="text"
                             placeholder="Search applicants..."
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
+                            className="w-full pl-9 pr-3 py-2 bg-[var(--pp-input-bg)] border border-[var(--pp-input-border)] rounded-lg text-sm text-[var(--pp-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--pp-primary)]/20 focus:border-[var(--pp-primary)]"
                         />
                     </div>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-2">
                     {filteredClients.length === 0 ? (
-                        <div className="p-4 text-center text-sm text-slate-400">
+                        <div className="p-4 text-center text-sm text-[var(--pp-text-muted)]">
                             {searchQuery ? 'No matching applicants found.' : 'No applicants found.'}
                         </div>
                     ) : (
@@ -245,18 +245,18 @@ const ClientChat = ({ shelterId }) => {
                                     onClick={() => setActiveClient(client)}
                                     className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-colors ${
                                         activeClient?.user_id === client.user_id
-                                            ? 'bg-brand-50 border border-brand-100 shadow-sm'
-                                            : 'hover:bg-slate-100 border border-transparent'
+                                            ? 'bg-[var(--pp-primary)]/10 border border-[var(--pp-primary)]/20 shadow-sm'
+                                            : 'hover:bg-[var(--pp-card-bg)] border border-transparent'
                                     }`}
                                 >
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${activeClient?.user_id === client.user_id ? 'bg-brand-100 text-brand-600' : 'bg-slate-200 text-slate-500'}`}>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${activeClient?.user_id === client.user_id ? 'bg-[var(--pp-primary)]/20 text-[var(--pp-primary)]' : 'bg-[var(--pp-card-bg)] text-[var(--pp-text-secondary)]'}`}>
                                         <UserCircle2 className="w-6 h-6" />
                                     </div>
                                     <div className="overflow-hidden">
-                                        <p className={`font-semibold truncate text-sm ${activeClient?.user_id === client.user_id ? 'text-brand-900' : 'text-slate-700'}`}>
+                                        <p className={`font-semibold truncate text-sm ${activeClient?.user_id === client.user_id ? 'text-[var(--pp-primary)]' : 'text-[var(--pp-text-primary)]'}`}>
                                             {client.user_name}
                                         </p>
-                                        <p className="text-xs text-slate-500 truncate">Tap to open chat</p>
+                                        <p className="text-xs text-[var(--pp-text-muted)] truncate">Tap to open chat</p>
                                     </div>
                                 </div>
                             ))}
@@ -266,29 +266,29 @@ const ClientChat = ({ shelterId }) => {
             </div>
 
             {/* Main Area: Chat Window */}
-            <div className="flex-1 flex flex-col bg-white">
+            <div className="flex-1 flex flex-col bg-[var(--pp-card-bg)]">
                 {activeClient ? (
                     <>
-                        <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-white z-10 shadow-sm">
+                        <div className="p-5 border-b border-[var(--pp-card-border)] flex justify-between items-center bg-[var(--pp-card-bg)] z-10 shadow-sm">
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center">
+                                <div className="w-10 h-10 bg-[var(--pp-bg)] text-[var(--pp-text-secondary)] rounded-full flex items-center justify-center">
                                     <UserCircle2 className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-slate-900 leading-tight">{activeClient.user_name}</h3>
-                                    <p className="text-xs font-medium text-brand-600 flex items-center gap-1"><Info className="w-3 h-3"/> Active Applicant</p>
+                                    <h3 className="font-bold text-[var(--pp-text-primary)] leading-tight">{activeClient.user_name}</h3>
+                                    <p className="text-xs font-medium text-[var(--pp-primary)] flex items-center gap-1"><Info className="w-3 h-3"/> Active Applicant</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-slate-50 relative">
+                        <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-[var(--pp-bg)] relative">
                             {isLoadingMessages ? (
-                                <div className="absolute inset-0 flex items-center justify-center bg-slate-50/50 backdrop-blur-[1px]">
-                                    <div className="animate-spin w-6 h-6 border-2 border-brand-500/30 border-t-brand-500 rounded-full"></div>
+                                <div className="absolute inset-0 flex items-center justify-center bg-[var(--pp-bg)]/50 backdrop-blur-[1px]">
+                                    <div className="animate-spin w-6 h-6 border-2 border-[var(--pp-primary)]/30 border-t-[var(--pp-primary)] rounded-full"></div>
                                 </div>
                             ) : messages.length === 0 ? (
-                                <div className="h-full flex flex-col items-center justify-center text-slate-400 space-y-3">
-                                    <MessageSquare className="w-12 h-12 text-slate-300" />
+                                <div className="h-full flex flex-col items-center justify-center text-[var(--pp-text-muted)] space-y-3">
+                                    <MessageSquare className="w-12 h-12 text-[var(--pp-text-muted)] opacity-50" />
                                     <p className="text-sm font-medium">No messages yet. Message {activeClient.user_name}!</p>
                                 </div>
                             ) : (
@@ -300,13 +300,13 @@ const ClientChat = ({ shelterId }) => {
                                             <div className={`max-w-[70%] sm:max-w-md flex flex-col ${isShelter ? 'items-end' : 'items-start'}`}>
                                                 <div className={`px-5 py-3 shadow-sm text-sm ${
                                                     isShelter
-                                                        ? 'bg-brand-600 text-white rounded-2xl rounded-tr-sm'
-                                                        : 'bg-white border border-slate-200 text-slate-800 rounded-2xl rounded-tl-sm'
+                                                        ? 'bg-[var(--pp-primary)] text-white rounded-2xl rounded-tr-sm'
+                                                        : 'bg-[var(--pp-card-bg)] border border-[var(--pp-card-border)] text-[var(--pp-text-primary)] rounded-2xl rounded-tl-sm'
                                                 }`}>
                                                     <p className="leading-relaxed">{msg.text}</p>
                                                 </div>
                                                 {showTime && (
-                                                    <p className="text-[10px] font-medium text-slate-400 mt-1.5 px-1">
+                                                    <p className="text-[10px] font-medium text-[var(--pp-text-muted)] mt-1.5 px-1">
                                                         {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                                     </p>
                                                 )}
@@ -318,19 +318,19 @@ const ClientChat = ({ shelterId }) => {
                             <div ref={messagesEndRef} className="h-1" />
                         </div>
 
-                        <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-100 bg-white">
+                        <form onSubmit={handleSendMessage} className="p-4 border-t border-[var(--pp-card-border)] bg-[var(--pp-card-bg)]">
                             <div className="relative flex items-center">
                                 <input
                                     type="text"
                                     value={chatInput}
                                     onChange={(e) => setChatInput(e.target.value)}
                                     placeholder={`Message ${activeClient.user_name}...`}
-                                    className="w-full pl-5 pr-14 py-3.5 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-900 outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 focus:bg-white transition-all shadow-inner"
+                                    className="w-full pl-5 pr-14 py-3.5 bg-[var(--pp-input-bg)] border border-[var(--pp-input-border)] rounded-full text-sm text-[var(--pp-text-primary)] outline-none focus:ring-2 focus:ring-[var(--pp-primary)]/20 focus:border-[var(--pp-primary)] focus:bg-[var(--pp-card-bg)] transition-all shadow-inner"
                                 />
                                 <button
                                     type="submit"
                                     disabled={!chatInput.trim()}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-brand-600 hover:bg-brand-700 text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-[var(--pp-primary)] hover:opacity-90 text-white rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Send className="w-4 h-4 -mr-0.5" />
                                 </button>
@@ -338,9 +338,9 @@ const ClientChat = ({ shelterId }) => {
                         </form>
                     </>
                 ) : (
-                    <div className="flex-1 flex flex-col items-center justify-center bg-slate-50 text-slate-400">
-                        <MessageSquare className="w-16 h-16 mb-4 text-slate-200" />
-                        <p className="font-semibold text-slate-500">Select an applicant conversation to begin</p>
+                    <div className="flex-1 flex flex-col items-center justify-center bg-[var(--pp-bg)] text-[var(--pp-text-muted)]">
+                        <MessageSquare className="w-16 h-16 mb-4 opacity-50" />
+                        <p className="font-semibold">Select an applicant conversation to begin</p>
                     </div>
                 )}
             </div>

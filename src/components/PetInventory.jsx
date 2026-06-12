@@ -172,31 +172,41 @@ const PetInventory = ({ shelterId }) => {
     };
 
     const getStatusColor = (status) => {
-        if (status === 'Available') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-        if (status === 'Sick') return 'bg-tangerine-50 text-tangerine-700 border-tangerine-200';
-        if (status === 'Adopted') return 'bg-brand-50 text-brand-700 border-brand-200';
-        if (status === 'Archived') return 'bg-slate-100 text-slate-500 border-slate-200';
-        return 'bg-slate-50 text-slate-700 border-slate-200';
+        if (status === 'Available') return 'available-badge';
+        if (status === 'Sick') return 'sick-badge';
+        if (status === 'Adopted') return 'adopted-badge';
+        if (status === 'Archived') return 'archived-badge';
+        return 'default-badge';
+    };
+
+    const getStatusStyle = (status) => {
+        if (status === 'Available') return { background: '#16A34A', color: '#FFFFFF', border: '1.5px solid #15803D' };
+        if (status === 'Sick') return { background: '#D97706', color: '#FFFFFF', border: '1.5px solid #B45309' };
+        if (status === 'Adopted') return { background: '#FFB27D', color: '#1A110B', border: '1.5px solid #E07830' };
+        if (status === 'Archived') return { background: '#6B7280', color: '#FFFFFF', border: '1.5px solid #4B5563' };
+        return { background: '#6B7280', color: '#FFFFFF', border: '1.5px solid #4B5563' };
     };
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-end mb-8">
                 <div>
-                    <h2 className="text-2xl font-bold text-slate-800">Pet Inventory</h2>
-                    <p className="text-slate-500 mt-1">Manage animals currently under your organization's care.</p>
+                    <h3 className="text-xl font-bold text-[var(--pp-text-primary)] flex items-center gap-2">
+                        Pet Inventory
+                    </h3>
+                    <p className="text-sm text-[var(--pp-text-secondary)] mt-1">Manage animals currently under your organization's care.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => setShowArchived(v => !v)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors font-medium text-sm border ${showArchived ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                        className={`flex items-center gap-2 px-4 py-2 font-medium text-sm transition-colors ${showArchived ? 'bg-[var(--pp-text-primary)] text-[var(--pp-bg)] rounded-[var(--pp-radius-sm)]' : 'btn-secondary'}`}
                     >
                         <Archive className="w-4 h-4" />
                         {showArchived ? 'Hide Archived' : 'Show Archived'}
                     </button>
                     <button
                         onClick={openAddModal}
-                        className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl transition-colors font-medium shadow-sm"
+                        className="btn-primary flex items-center gap-2"
                     >
                         <Plus className="w-5 h-5" />
                         Add New Pet
@@ -211,46 +221,106 @@ const PetInventory = ({ shelterId }) => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {pets.map((pet) => (
-                        <div key={pet.pet_id} className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden group">
-                            <div className={`aspect-[4/3] bg-slate-100 relative overflow-hidden ${pet.status === 'Archived' ? 'opacity-60 grayscale' : ''}`}>
+                        <div key={pet.pet_id} className="pp-card overflow-hidden group" style={{ transition: 'transform 0.2s, box-shadow 0.2s' }}
+                            onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(255,178,125,0.18)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = ''; }}
+                        >
+                            {/* Pet Image */}
+                            <div className={`relative overflow-hidden ${pet.status === 'Archived' ? 'opacity-60 grayscale' : ''}`} style={{ aspectRatio: '4/3' }}>
                                 {pet.avatar_url ? (
-                                    <img src={pet.avatar_url} alt={pet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                    <img src={pet.avatar_url} alt={pet.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-slate-300">
-                                        <Upload className="w-10 h-10" />
+                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2" style={{ background: 'var(--pp-bg)' }}>
+                                        <Upload style={{ width: 32, height: 32, color: 'var(--pp-text-muted)' }} />
+                                        <span style={{ fontSize: 12, color: 'var(--pp-text-muted)', fontWeight: 500 }}>No photo</span>
                                     </div>
                                 )}
-                                <div className="absolute top-3 right-3 flex gap-1.5">
-                                    {pet.status !== 'Archived' && (
-                                        <button onClick={() => openEditModal(pet)} className="p-2 bg-white/90 backdrop-blur rounded-full text-slate-600 hover:text-brand-600 shadow-sm" title="Edit">
-                                            <Edit2 className="w-4 h-4" />
-                                        </button>
-                                    )}
-                                    {pet.status !== 'Archived' ? (
-                                        <button onClick={() => { if (window.confirm(`Archive ${pet.name}? They won't appear in adoptions.`)) handleArchivePet(pet.pet_id); }} className="p-2 bg-white/90 backdrop-blur rounded-full text-slate-600 hover:text-red-600 shadow-sm" title="Archive">
-                                            <Archive className="w-4 h-4" />
-                                        </button>
-                                    ) : (
-                                        <button onClick={() => handleRestorePet(pet.pet_id)} className="p-2 bg-white/90 backdrop-blur rounded-full text-slate-600 hover:text-emerald-600 shadow-sm" title="Restore">
-                                            <RotateCcw className="w-4 h-4" />
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                            <div className="p-5">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-lg font-bold text-slate-900 truncate pr-2">{pet.name}</h3>
-                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${getStatusColor(pet.status)}`}>
+                                {/* Gradient overlay for actions */}
+                                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.55) 100%)', pointerEvents: 'none' }} />
+                                {/* Status badge on image */}
+                                <div style={{ position: 'absolute', top: 10, left: 10 }}>
+                                    <span
+                                        style={{
+                                            display: 'inline-flex', alignItems: 'center', gap: 5,
+                                            padding: '4px 10px', borderRadius: 9999,
+                                            fontSize: 11, fontWeight: 700,
+                                            backdropFilter: 'blur(8px)',
+                                            boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                                            ...getStatusStyle(pet.status)
+                                        }}
+                                    >
                                         {getStatusIcon(pet.status)}
                                         {pet.status}
                                     </span>
                                 </div>
-                                <p className="text-sm text-slate-500 font-medium mb-3">
-                                    {pet.breed} • {pet.age} yrs
-                                </p>
-                                <div className="text-sm text-slate-600 line-clamp-2">
-                                    {pet.medical_history || 'No medical history recorded.'}
+                                {/* Action buttons — always visible, high-contrast */}
+                                <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: 6 }}>
+                                    {pet.status !== 'Archived' && (
+                                        <button
+                                            onClick={() => openEditModal(pet)}
+                                            title="Edit pet"
+                                            aria-label={`Edit ${pet.name}`}
+                                            style={{
+                                                width: 34, height: 34, borderRadius: '50%',
+                                                background: '#FFFFFF', border: '2px solid rgba(255,178,125,0.6)',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                                                transition: 'background 0.15s, transform 0.15s', color: '#E07830'
+                                            }}
+                                            onMouseEnter={e => { e.currentTarget.style.background = '#FFB27D'; e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
+                                            onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.querySelector('svg').style.color = '#E07830'; }}
+                                        >
+                                            <Edit2 style={{ width: 15, height: 15 }} />
+                                        </button>
+                                    )}
+                                    {pet.status !== 'Archived' ? (
+                                        <button
+                                            onClick={() => { if (window.confirm(`Archive ${pet.name}? They won't appear in adoptions.`)) handleArchivePet(pet.pet_id); }}
+                                            title="Archive pet"
+                                            aria-label={`Archive ${pet.name}`}
+                                            style={{
+                                                width: 34, height: 34, borderRadius: '50%',
+                                                background: '#FFFFFF', border: '2px solid rgba(239,68,68,0.4)',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                                                transition: 'background 0.15s, transform 0.15s', color: '#DC2626'
+                                            }}
+                                            onMouseEnter={e => { e.currentTarget.style.background = '#EF4444'; e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
+                                            onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.querySelector('svg').style.color = '#DC2626'; }}
+                                        >
+                                            <Archive style={{ width: 15, height: 15 }} />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleRestorePet(pet.pet_id)}
+                                            title="Restore pet"
+                                            aria-label={`Restore ${pet.name}`}
+                                            style={{
+                                                width: 34, height: 34, borderRadius: '50%',
+                                                background: '#FFFFFF', border: '2px solid rgba(16,185,129,0.4)',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                                                transition: 'background 0.15s, transform 0.15s', color: '#059669'
+                                            }}
+                                            onMouseEnter={e => { e.currentTarget.style.background = '#10B981'; e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.querySelector('svg').style.color = '#fff'; }}
+                                            onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.querySelector('svg').style.color = '#059669'; }}
+                                        >
+                                            <RotateCcw style={{ width: 15, height: 15 }} />
+                                        </button>
+                                    )}
                                 </div>
+                            </div>
+
+                            {/* Pet Details */}
+                            <div style={{ padding: '16px 18px 18px' }}>
+                                <h3 style={{ fontSize: 17, fontWeight: 800, color: 'var(--pp-text-primary)', margin: '0 0 4px', letterSpacing: '-0.02em' }}>{pet.name}</h3>
+                                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--pp-primary)', margin: '0 0 10px' }}>
+                                    {pet.species} · {pet.breed}
+                                    {pet.age ? <span style={{ color: 'var(--pp-text-secondary)', fontWeight: 500 }}> · {pet.age} yrs</span> : null}
+                                </p>
+                                <p style={{ fontSize: 12, color: 'var(--pp-text-secondary)', lineHeight: 1.6, margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                    {pet.medical_history || 'No medical history recorded.'}
+                                </p>
                             </div>
                         </div>
                     ))}
@@ -264,13 +334,13 @@ const PetInventory = ({ shelterId }) => {
             )}
 
             {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
-                        <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                            <h3 className="text-xl font-bold text-slate-800">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 transition-opacity">
+                    <div className="pp-card max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                        <div className="p-6 border-b border-[var(--pp-card-border)] flex justify-between items-center bg-[var(--pp-bg)]">
+                            <h3 className="text-xl font-bold text-[var(--pp-text-primary)]">
                                 {editingPet ? 'Edit Pet Details' : 'Add New Pet'}
                             </h3>
-                            <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                            <button onClick={() => setIsModalOpen(false)} className="text-[var(--pp-text-muted)] hover:text-[var(--pp-text-primary)]">
                                 <X className="w-6 h-6" />
                             </button>
                         </div>
@@ -278,12 +348,12 @@ const PetInventory = ({ shelterId }) => {
                             <form onSubmit={handleSave} className="space-y-6">
                                 {/* Photo Upload */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Pet Photo</label>
+                                    <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Pet Photo</label>
                                     <div className="flex items-center gap-4">
                                         {formData.avatar_url && (
-                                            <img src={formData.avatar_url} alt="Preview" className="w-20 h-20 rounded-xl object-cover shadow-sm bg-slate-100" />
+                                            <img src={formData.avatar_url} alt="Preview" className="w-20 h-20 rounded-xl object-cover shadow-sm bg-[var(--pp-bg)]" />
                                         )}
-                                        <label className="cursor-pointer border-2 border-dashed border-slate-200 rounded-xl px-6 py-4 flex flex-col items-center justify-center hover:border-brand-500 hover:bg-brand-50 transition-colors w-full">
+                                        <label className="cursor-pointer border-2 border-dashed border-[var(--pp-card-border)] rounded-xl px-6 py-4 flex flex-col items-center justify-center hover:border-brand-500 hover:bg-[var(--pp-bg)] transition-colors w-full">
                                             {uploadingImage ? (
                                                 <Loader2 className="w-6 h-6 text-brand-500 animate-spin" />
                                             ) : (
@@ -299,18 +369,18 @@ const PetInventory = ({ shelterId }) => {
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Name</label>
+                                        <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Name</label>
                                         <input
                                             type="text" required
                                             value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-slate-50"
+                                            className="w-full px-4 py-2 border border-[var(--pp-input-border)] rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-[var(--pp-input-bg)] text-[var(--pp-text-primary)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Species</label>
+                                        <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Species</label>
                                         <select
                                             value={formData.species} onChange={(e) => setFormData({ ...formData, species: e.target.value })}
-                                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-slate-50"
+                                            className="w-full px-4 py-2 border border-[var(--pp-input-border)] rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-[var(--pp-input-bg)] text-[var(--pp-text-primary)]"
                                         >
                                             <option value="Dog">Dog</option>
                                             <option value="Cat">Cat</option>
@@ -319,25 +389,25 @@ const PetInventory = ({ shelterId }) => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Breed</label>
+                                        <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Breed</label>
                                         <input
                                             type="text"
                                             value={formData.breed} onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
-                                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-slate-50"
+                                            className="w-full px-4 py-2 border border-[var(--pp-input-border)] rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-[var(--pp-input-bg)] text-[var(--pp-text-primary)]"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Age (Years)</label>
+                                        <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Age (Years)</label>
                                         <input
                                             type="number" min="0" step="1"
                                             value={formData.age} onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                                            className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-slate-50"
+                                            className="w-full px-4 py-2 border border-[var(--pp-input-border)] rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-[var(--pp-input-bg)] text-[var(--pp-text-primary)]"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Status</label>
+                                    <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Status</label>
                                     <div className="flex gap-4">
                                         {['Available', 'Sick', 'Adopted', 'Recovery'].map((status) => (
                                             <label key={status} className="flex flex-1 items-center justify-center">
@@ -356,24 +426,24 @@ const PetInventory = ({ shelterId }) => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">Medical History & Notes</label>
+                                    <label className="block text-sm font-semibold text-[var(--pp-text-primary)] mb-2">Medical History & Notes</label>
                                     <textarea
                                         rows="3"
                                         value={formData.medical_history} onChange={(e) => setFormData({ ...formData, medical_history: e.target.value })}
-                                        className="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-slate-50"
+                                        className="w-full px-4 py-2 border border-[var(--pp-input-border)] rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-[var(--pp-input-bg)] text-[var(--pp-text-primary)]"
                                     ></textarea>
                                 </div>
 
-                                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                                <div className="flex justify-end gap-3 pt-4 border-t border-[var(--pp-card-border)]">
                                     <button
                                         type="button" onClick={() => setIsModalOpen(false)}
-                                        className="px-5 py-2.5 text-slate-600 font-medium hover:bg-slate-100 rounded-xl transition-colors"
+                                        className="btn-secondary"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit" disabled={uploadingImage}
-                                        className="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl transition-colors shadow-sm disabled:opacity-50"
+                                        className="btn-primary disabled:opacity-50"
                                     >
                                         {editingPet ? 'Update Pet' : 'Save Pet'}
                                     </button>
