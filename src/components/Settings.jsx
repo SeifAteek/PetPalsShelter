@@ -22,11 +22,50 @@ const Settings = ({ shelterData, setShelterData }) => {
         }
     }, [shelterData]);
 
-    const handleLogoChange = (e) => {
+    const handleLogoChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setSelectedFile(file);
-            setPreviewUrl(URL.createObjectURL(file));
+        if (!file) return;
+
+        setIsSaving(true);
+        setMessage('');
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `logo-${shelterData.shelter_id}.${fileExt}`;
+            const filePath = `shelter_assets/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('pet_files')
+                .upload(filePath, file, { upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            const { data: urlData } = supabase.storage
+                .from('pet_files')
+                .getPublicUrl(filePath);
+
+            const finalLogoUrl = urlData.publicUrl;
+
+            const { data, error } = await supabase
+                .from('shelter_profiles')
+                .update({
+                    logo_url: finalLogoUrl
+                })
+                .eq('shelter_id', shelterData.shelter_id)
+                .select();
+
+            if (error) throw error;
+
+            setMessage('Logo updated successfully!');
+            setPreviewUrl(finalLogoUrl);
+            setSelectedFile(null);
+            setShelterData(data[0] || { ...shelterData, logo_url: finalLogoUrl });
+
+            setTimeout(() => setMessage(''), 3000);
+        } catch (err) {
+            setMessage('Error: ' + err.message);
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -70,7 +109,11 @@ const Settings = ({ shelterData, setShelterData }) => {
             setMessage('Settings updated successfully!');
             setShelterData(data[0] || { ...shelterData, ...formData, logo_url: finalLogoUrl });
             
-            setTimeout(() => setMessage(''), 3000);
+            // Auto hide message and reload page after a short delay
+            setTimeout(() => {
+                setMessage('');
+                window.location.reload();
+            }, 500);
         } catch (err) {
             setMessage('Error: ' + err.message);
         } finally {
